@@ -69,7 +69,7 @@ def def_hex_grid(refdir, workdir, dvox, shape, dfiber, rfibperp, rfibpar, E_bg, 
             try:
                 # update location of elipsoid
                 sopts[0] = -ilat * dlat
-                sopts[2] = -iax * dax
+                sopts[2] = -(iax + (ilat%2)/2)* dax
                 print(sopts[0], sopts[2])
 
                 # find nodes and elements that correspond to this fiber and update element file
@@ -92,8 +92,9 @@ def def_hex_grid(refdir, workdir, dvox, shape, dfiber, rfibperp, rfibpar, E_bg, 
         dyntemp = Template(f.read())
 
     filled = dyntemp.substitute(
-        E_bg = E_bg,
-        E_fb = E_fb,
+        title="boopboopbedoop",
+        E_bg = f"{int(E_bg):d}",
+        E_fb = f"{int(E_fb):d}",
         fiber_defs = partstr
     )
 
@@ -110,15 +111,19 @@ def def_hex_grid(refdir, workdir, dvox, shape, dfiber, rfibperp, rfibpar, E_bg, 
 
 def run_compression(workdir, dynadeck):
     print("Starting compression")
+    chdir(workdir)
     # apply displacement condition to the zmax face
     generate_loads(loadtype='disp', direction=2, amplitude=-0.015,
                 top_face=(0, 0, 0, 0, 0, 1), lcid=1)
+    
+    NTASKS = environ.get('SLURM_NTASKS', '8')
 
-    curdir = getcwd()
-    system(('singularity exec -p -B {} /opt/apps/staging/ls-dyna-singularity/ls-dyna.sif ls-dyna-d ncpu={} i={} memory = 600000000'.format(curdir, NTASKS, DYNADECK)))
+    system(('singularity exec -p -B {} /opt/apps/staging/ls-dyna-singularity/ls-dyna.sif ls-dyna-d ncpu={} i={} memory = 600000000'.format(workdir, NTASKS, dynadeck)))
 
     create_disp_dat()
 
     create_res_sim(dynadeck)
 
     print('FINISHED: {}'.format(ctime()))
+
+def runfield()

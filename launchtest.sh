@@ -10,4 +10,4 @@ hostname
 module load Python/3.8.1
 module load LS-DYNA/R12.0.0
 source /work/wew12/elasticity/.venv/bin/activate
-python runq5.py
+python testit.py
