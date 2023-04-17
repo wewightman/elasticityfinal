@@ -126,4 +126,16 @@ def run_compression(workdir, dynadeck):
 
     print('FINISHED: {}'.format(ctime()))
 
-def runfield()
+def runfield(Inorm, ncycles, dnode, fempath, fieldpath, repopath):
+    """Interface with matlab to generate fieldII parameters
+    NOTE: Assumes matlab is loaded to path
+
+    Parameters:
+    ----
+    Inorm: the normalization 
+    """
+    command = "matlab -nodisplay -nosplash -singleCompThread -r \"addpath('"
+    +repopath+"'); runfield("+str(Inorm)+","+str(ncycles)+","+str(dnode)+",'"
+    +fempath+"','"+fieldpath+"');exit;\""
+    
+    system(command)
