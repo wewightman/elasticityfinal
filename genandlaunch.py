@@ -178,7 +178,7 @@ def def_hex_grid_full(refdir, workdir, dvox, shape, dfiber, rfibperp, rfibpar, E
 
     #print("COPYING DYNADECK TEMPLATE")
     #with open(refdir+template, 'r') as f:
-        dyntemp = Template(f.read())
+    #    dyntemp = Template(f.read())
 
     #filled = dyntemp.substitute(
     #    title="boopboopbedoop",
