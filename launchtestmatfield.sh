@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH -o slurm.%A.out #STDOUT
-#SBATCH -e slurm.%A.out #STDERR
+#SBATCH -o /work/wew12/elasticity/finalproject/data/pushit/slurm.%A.out #STDOUT
+#SBATCH -e /work/wew12/elasticity/finalproject/data/pushit//slurm.%A.out #STDERR
 #SBATCH --mem=16G
 #SBATCH --partition=ultrasound
 #SBATCH --exclude=dcc-ultrasound-01

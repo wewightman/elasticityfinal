@@ -1,29 +1,51 @@
 import genandlaunch as gal
 import os
 
-srcdir = "/work/wew12/elasticity/finalproject/manyfibers/"
-savedir = "/work/wew12/elasticity/finalproject/data/prelimtest/"
+dvox = 0.05
 
-if not os.path.exists(davedir): os.makedirs(savedir)
+srcdir = "/hpc/group/ultrasound/wew12/repos/elasticityfinal/"
+savedir = "/work/wew12/elasticity/finalproject/data/pushit/"
+fieldpath = "/hpc/group/ultrasound/wew12/modules/field_ii_pro_matlab/m_files/"
+fempath = "/hpc/group/ultrasound/wew12/modules/fem/fem/field/"
+
+if not os.path.exists(savedir): os.makedirs(savedir)
+os.chdir(savedir)
 
 genparams = {
     'refdir':srcdir,
     'workdir':savedir,
-    'dvox':0.05,
-    'shape':[1.5, 1.5, 3],
+    'dvox':dvox,
+    'shape':[3, 3, 3],
     'dfiber':0.4,
-    'rfibperp':0.075,
+    'rfibperp':0.05,
     'rfibpar':5,
     'E_bg':10,
-    'E_fb':100
+    'E_fb':100,
+    'template':"fieldpush_temp.dyn"
 }
 
-gal.def_hex_grid(**genparams)
+fiber_def = gal.def_hex_grid_full(**genparams)
 
 fieldparams = {
-    
+    'Inorm':1000,
+    'ncycles':400,
+    'dnode':dvox,
+    'fempath':fempath,
+    'fieldpath':fieldpath,
+    'repopath':srcdir,
+    'sym':'n',
+    'probe':"l74.json"
 }
 
-gal.runfield()
+gal.runfield(**fieldparams)
 
-gal.run_compression(savedir, "deck.dyn")
+dynaparams = {
+    'workdir':savedir,
+    'curdeck':"deck.dyn",
+    'fiber_def':fiber_def,
+    'E_bg':10,
+    'E_fb':100,
+    'template':"fieldpush_temp.dyn"
+}
+
+gal.calldyna(dynaparams)
