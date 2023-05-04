@@ -4,8 +4,8 @@ import os
 dvox = $dvox
 E_bg = $E_bg
 E_fb = $E_fb
-polarity = $polarity
-savedir = $savedir
+polarity = "$polarity"
+savedir = "$savedir"
 
 srcdir = "/hpc/group/ultrasound/wew12/repos/elasticityfinal/"
 fieldpath = "/hpc/group/ultrasound/wew12/modules/field_ii_pro_matlab/m_files/"
@@ -33,8 +33,7 @@ fieldparams = {
     'dnode':dvox,
     'fempath':fempath,
     'fieldpath':fieldpath,
-    'repopath':srcdir,
-    'probe':"l74.json"
+    'repopath':srcdir
 }
 
 gal.runfield(**fieldparams)
@@ -44,4 +43,4 @@ dynaparams = {
     'curdeck':"deck.dyn"
 }
 
-gal.calldyna(dynaparams)
+gal.calldyna(**dynaparams)

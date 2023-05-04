@@ -13,7 +13,7 @@ def def_cross(refdir, workdir, shape, dvox, polarity, E_bg, E_fb, template="fiel
     chdir(workdir)
 
     mfg.genAndLoadFibers(dvox, shape, mode="cross", polarity=polarity)
-    partstr = "*PART\nBACKGROUND\n1,1,1,0,0,0,0\n*PART\nFibers\n2,1,2,0,0,0,0\n"
+    partstr = "*PART\nBACKGROUND\n1,1,1,0,0,0,0\n*PART\nFIBERS\n2,1,2,0,0,0,0"
 
     print("COPYING DYNADECK TEMPLATE")
     with open(refdir+template, 'r') as f:
@@ -27,6 +27,8 @@ def def_cross(refdir, workdir, shape, dvox, polarity, E_bg, E_fb, template="fiel
         E_fb = f"{int(E_fb):d}",
         fiber_defs = partstr
     )
+    
+    print(filled)
 
     with open(workdir+"deck.dyn", 'w') as f:
         f.write(filled)
@@ -45,7 +47,7 @@ def def_dotcross(refdir, workdir, shape, dvox, polarity, E_bg, E_fb, template="f
     chdir(workdir)
 
     mfg.genAndLoadFibers(dvox, shape, mode="cross", polarity=polarity)
-    partstr = "*PART\nBACKGROUND\n1,1,1,0,0,0,0\n*PART\nFibers\n2,1,2,0,0,0,0\n"
+    partstr = "*PART\nBACKGROUND\n1,1,1,0,0,0,0\n*PART\nFIBERS\n2,1,2,0,0,0,0"
 
     print("COPYING DYNADECK TEMPLATE")
     with open(refdir+template, 'r') as f:
@@ -59,6 +61,8 @@ def def_dotcross(refdir, workdir, shape, dvox, polarity, E_bg, E_fb, template="f
         E_fb = f"{int(E_fb):d}",
         fiber_defs = partstr
     )
+    
+    print(filled)
 
     with open(workdir+"deck.dyn", 'w') as f:
         f.write(filled)
@@ -92,8 +96,8 @@ def runfield(Inorm, ncycles, dnode, fempath, fieldpath, repopath):
     
     # launch field simulation
     command = "matlab -nodisplay -nosplash -singleCompThread -r \"addpath('"
-    +repopath+"'); runfield("+str(Inorm)+","+str(ncycles)+","+str(dnode)+",'"
-    +fempath+"','"+fieldpath+"','n');exit;\""
+    command += repopath+"'); runfield("+str(Inorm)+","+str(ncycles)+","+str(dnode)+",'"
+    command += fempath+"','"+fieldpath+"','n');exit;\""
     system(command)
 
 def calldyna(workdir, curdeck="deck.dyn"):
